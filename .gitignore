@@ -1,0 +1,13 @@
+node_modules/
+dist/
+release/
+.cache/
+*.log
+.env
+.env.*
+!.env.example
+# local secrets, local database and personal synced data
+.dev.vars
+.wrangler/
+sync/
+.claude/

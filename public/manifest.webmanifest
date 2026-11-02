@@ -1,0 +1,10 @@
+{
+  "name": "Jarvis Hub",
+  "short_name": "Hub",
+  "description": "Jarvis, TV, music, games and the web on your phone",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#121217",
+  "theme_color": "#121217",
+  "icons": [{ "src": "icon.png", "sizes": "512x512", "type": "image/png", "purpose": "any" }]
+}

@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' https: data:; style-src 'self' 'unsafe-inline'; script-src 'self'; connect-src 'self'; media-src 'self' blob: data:; frame-src https://www.youtube.com https://www.youtube-nocookie.com" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Hub" />
+  <meta name="theme-color" content="#121217" />
+  <link rel="manifest" href="manifest.webmanifest" />
+  <link rel="apple-touch-icon" href="icon.png" />
+  <title>Hub</title>
+  <link rel="stylesheet" href="app.css" />
+  <link rel="stylesheet" href="cloud.css" />
+  <link rel="stylesheet" href="apps.css" />
+</head>
+<body>
+  <main id="view"></main>
+  <nav id="tabs" hidden>
+    <button data-tab="jarvis"><i class="i-jarvis"></i><span>Jarvis</span></button>
+    <button data-tab="home"><i class="i-web"></i><span>Home</span></button>
+    <button data-tab="tv"><i class="i-tv"></i><span>TV</span></button>
+    <button data-tab="music"><i class="i-music"></i><span>Music</span></button>
+    <button data-tab="games"><i class="i-games"></i><span>Games</span></button>
+  </nav>
+  <div id="sheet" hidden></div>
+  <div id="toast" hidden></div>
+  <script src="app.js"></script>
+</body>
+</html>
