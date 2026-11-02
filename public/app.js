@@ -53,6 +53,7 @@ async function login() {
 
 // ---------- tabs ----------
 let tab = localStorage.getItem('hub.tab') || 'jarvis';
+if (tab === 'circle') tab = 'socialer'; // the tab was renamed
 function start() {
   $('#tabs').hidden = false;
   go(tab);
@@ -66,15 +67,15 @@ function go(name) {
   clearInterval(heroTimer);
   document.querySelectorAll('#tabs button').forEach((b) => b.classList.toggle('on', b.dataset.tab === name));
   $('#view').scrollTop = 0;
-  ({ jarvis, home, tv, music, games, circle })[name]().catch((e) => e.message !== 'Signed out' && tab === name && $('#view').dataset.tab === name && toast(e.message));
+  ({ jarvis, home, tv, music, games, socialer })[name]().catch((e) => e.message !== 'Signed out' && tab === name && $('#view').dataset.tab === name && toast(e.message));
 }
 document.querySelectorAll('#tabs button').forEach((b) => (b.onclick = () => go(b.dataset.tab)));
 
 
-// ---------- Circle: your social app and messages, embedded (it keeps its own sign-in) ----------
-const CIRCLE_URL = 'https://circle.arjun-hub.workers.dev/';
-async function circle() {
-  $('#view').innerHTML = `<iframe class="circle-frame" src="${CIRCLE_URL}" title="Circle" allow="clipboard-write; web-share; notifications"></iframe>`;
+// ---------- Socialer: your social app and messages, embedded (it keeps its own sign-in) ----------
+const SOCIALER_URL = 'https://socialer.arjun-hub.workers.dev/';
+async function socialer() {
+  $('#view').innerHTML = `<iframe class="social-frame" src="${SOCIALER_URL}" title="Socialer" allow="clipboard-write; web-share; notifications"></iframe>`;
 }
 
 // ---------- actions Jarvis can hand back ----------
