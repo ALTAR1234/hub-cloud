@@ -299,6 +299,14 @@ export default {
       return json({ ok: true });
     }
 
+    // --- Socialer asks Jarvis for replies in your Jarvis chat (its own shared secret, not a session) ---
+    if (url.pathname === '/api/peer/jarvis' && req.method === 'POST') {
+      const auth = (req.headers.get('authorization') || '').replace(/^Bearer /, '');
+      if (!env.PEER_TOKEN || !same(auth, env.PEER_TOKEN)) return json({ error: 'forbidden' }, 403);
+      const r = await jarvis(env, Array.isArray(body.messages) ? body.messages : [], false);
+      return json({ reply: r.reply });
+    }
+
     // --- everything below needs a signed-in session ---
     const t = cookieOf(req);
     if (!t || !(await env.HUB.get(`session:${t}`))) return json({ error: 'Signed out' }, 401);
