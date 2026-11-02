@@ -66,10 +66,16 @@ function go(name) {
   clearInterval(heroTimer);
   document.querySelectorAll('#tabs button').forEach((b) => b.classList.toggle('on', b.dataset.tab === name));
   $('#view').scrollTop = 0;
-  ({ jarvis, home, tv, music, games })[name]().catch((e) => e.message !== 'Signed out' && tab === name && $('#view').dataset.tab === name && toast(e.message));
+  ({ jarvis, home, tv, music, games, circle })[name]().catch((e) => e.message !== 'Signed out' && tab === name && $('#view').dataset.tab === name && toast(e.message));
 }
 document.querySelectorAll('#tabs button').forEach((b) => (b.onclick = () => go(b.dataset.tab)));
 
+
+// ---------- Circle: your social app and messages, embedded (it keeps its own sign-in) ----------
+const CIRCLE_URL = 'https://circle.arjun-hub.workers.dev/';
+async function circle() {
+  $('#view').innerHTML = `<iframe class="circle-frame" src="${CIRCLE_URL}" title="Circle" allow="clipboard-write; web-share; notifications"></iframe>`;
+}
 
 // ---------- actions Jarvis can hand back ----------
 const SEARCH = {
@@ -245,18 +251,18 @@ async function jarvis() {
   };
 }
 
-// ---------- Home: Weber's new-tab page (date, squircle search, weather, topic pills) ----------
+// ---------- Home: Weber's new-tab page (greeting, search, favorites, weather, today's stories) ----------
 const TOPIC = { Movies: '#ff4f7b', Games: '#7b5cff', Science: '#2fd6a3', Tech: '#4fb4ff' };
 let homeTopic = 'All';
 async function home() {
   const v = $('#view');
   const now = new Date();
   v.innerHTML = `<div class="wb">
-    <div class="wb-top"><div class="wb-date"><b>${now.toLocaleDateString([], { weekday: 'long' })}</b><span>${now.toLocaleDateString([], { month: 'long', day: 'numeric' })}</span></div><div class="wb-clock">${now.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' })}</div></div>
-    <form class="wb-search" id="hf"><i>⌕</i><input id="hq" placeholder="Search or enter address" enterkeyhint="go" autocomplete="off" autocapitalize="off"></form>
-    <div class="wb-rail">${[['YouTube', 'youtube.com', '#ff0033'], ['Reddit', 'reddit.com', '#ff4500'], ['Gmail', 'mail.google.com', '#ea4335'], ['X', 'x.com', '#222'], ['Amazon', 'amazon.com', '#ff9900'], ['ESPN', 'espn.com', '#d00']].map(([n, u, c]) => `<a href="https://${u}" style="--c:${c}"><img src="https://www.google.com/s2/favicons?domain=${u}&sz=64" alt=""><span>${n}</span></a>`).join('')}</div>
+    <div class="wb-top"><h1>${['Good night', 'Good morning', 'Good afternoon', 'Good evening'][now.getHours() < 5 ? 0 : now.getHours() < 12 ? 1 : now.getHours() < 17 ? 2 : 3]}</h1><p><b>${now.toLocaleDateString([], { weekday: 'long', month: 'long', day: 'numeric' })}</b><span>${now.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' })}</span></p></div>
+    <form class="wb-search" id="hf"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="6"/><path d="M16 16l4 4"/></svg><input id="hq" placeholder="Search the web or type an address" enterkeyhint="go" autocomplete="off" autocapitalize="off"></form>
+    <div class="wb-rail">${[['YouTube', 'youtube.com', '#ff0033'], ['Reddit', 'reddit.com', '#ff4500'], ['Gmail', 'mail.google.com', '#ea4335'], ['X', 'x.com', '#222'], ['Amazon', 'amazon.com', '#ff9900'], ['ESPN', 'espn.com', '#d00']].map(([n, u, c]) => `<a href="https://${u}" style="--c:${c}"><i><img src="https://www.google.com/s2/favicons?domain=${u}&sz=64" alt=""></i><span>${n}</span></a>`).join('')}</div>
     <div id="hwx"></div>
-    <div class="wb-pills" id="hp">${['All', ...Object.keys(TOPIC)].map((t) => `<button class="${t === homeTopic ? 'on' : ''}" style="--c:${TOPIC[t] || '#fff'}">${t}</button>`).join('')}</div>
+    <h2 class="wb-h">Today</h2><div class="wb-pills" id="hp">${['All', ...Object.keys(TOPIC)].map((t) => `<button class="${t === homeTopic ? 'on' : ''}" style="--c:${TOPIC[t] || '#fff'}">${t}</button>`).join('')}</div>
     <div id="hb"><div class="empty">Loading…</div></div></div>`;
   $('#hf').onsubmit = (e) => {
     e.preventDefault();
